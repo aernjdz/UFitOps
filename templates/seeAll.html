@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LogoCat.png') }}" > 
+    <link rel="icon" type="image/ico" href="./img/LogoCat.ico" >
+    <meta http-equiv="refresh" content="60" />
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>UFitOps</title> 
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- SIDEBAR music -->
+        <aside class="sidebar">
+            <div id="fix">
+            <div class="logo">
+                <button class="menu-btn" id="menu-close">
+                    <i class='bx bx-log-out-circle'></i>
+                </button>
+                <div><a href="/"><img src="{{ url_for('static', filename='img/LogoCat_no_bg.png') }}" style="width: 5vw;"/></a> </div>
+                <a href="/">UFitOps</a>
+            </div>
+
+            <div class="menu">
+                <h5>Menu</h5>
+                <ul>
+                   
+                    <li>
+                        <i class='bx bxs-volume-full'></i>
+                        <a href="#">Genres</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-album'></i>
+                        <a href="#">Albums</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-microphone'></i>
+                        <a href="#">Artists</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-radio'></i>
+                        <a href="#">Poddcasts</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu">
+                <h5>Library</h5>
+                <ul>
+                    <li>
+                        <i class='bx bx-undo'></i>
+                        <a href="#">Recent</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-photo-album'></i>
+                        <a href="#">Albums</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-heart'></i>
+                        <a href="#">Favourites</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-folder'></i>
+                        <a href="#">Local</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="menu">
+                <h5>Playlist</h5>
+                <ul>
+                    <li>
+                        <i class='bx bxs-plus-square'></i>
+                        <a href="#">Create New</a>
+                    </li>
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="#">Best of 2024</a>
+                    </li>
+                </ul>
+            </div>
+            </div>
+        </aside>
+        <!-- ------------------ -->
+        
+        <main>
+            <header>
+                <div class="search">
+                    <i class='bx bx-search'></i>
+                    <input type="text" placeholder="Type here to search">
+                </div>
+
+            </header>
+
+            <div class="trending">
+                <div class="left">
+                    <h5>Trending New Song</h5>
+                    <div class="info">
+                        <h2>{{ song.title }}</h2>
+                        <h4>{{ song.artist }}</h4>
+                        <h5><i class='bx bx-group' style="margin-right: 5px; color:#919191"></i>{{ song.views }} views</h5>
+                        <div class="buttons">
+                            <button>Listen Now</button>
+                            <i class='bx bxs-heart'></i>
+                        </div>
+                    </div>
+                </div>
+                <img src="{{song.thumbnails}}">
+            </div>
+
+            <div class="playlist">
+      
+
+                <div class="music-list" id="new_width">
+                    <div class="header">
+                        <h5>Top Songs</h5>
+                    </div>
+
+                    <div class="items">
+                        {% for song_top in songs %}
+                        <div class="item">
+                            <div class="info">
+                                <p>{{ song_top.id }}</p>
+                                <img src="{{ song_top.thumbnails }}">
+                                <div class="details">
+                                    <h5>{{song_top.title }}</h5>
+                                    <p>{{song_top.artist }}</p>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <p>{{song_top.duration}}</p>
+                                <div class="icon">
+                                    <i class='bx bxs-right-arrow'></i>
+                                </div>
+                                <i class='bx bxs-plus-square'></i>
+                            </div>
+                        </div>
+                        {% endfor %}
+                  
+                      
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+<!-- PROFILE -->
+        <div class="right-section">
+            <div class="profile">
+                <i class='bx bxs-bell'></i>
+                <i class='bx bxs-cog'></i>
+                <div class="user">
+                    <div class="left">
+                        <img src="assets/profile.png">
+                    </div>
+                    <div class="right">
+                        <h5>Jhon Doe</h5>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+        </div>
+
+    </div>
+
+    <script>
+      function loadAudio(songUrl) {
+            fetch(`/get_audio_stream_url?song_url=${encodeURIComponent(songUrl)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data.audio_stream_url)
+                    const audioSource = document.getElementById('audio-source');
+                    audioSource.src = data.audio_stream_url;
+                    const audioPlayer = document.getElementById('audio-player');
+                    audioPlayer.load();
+                    audioPlayer.play();
+                })
+                
+        }
+    </script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/PlayMusic.js')}}"></script>
+</body>
+
+</html>
