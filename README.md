@@ -4,11 +4,11 @@
 ## Subject: Music Player 
 
 ### Project Name:  UFitOps
-- Language: 
--- BackEnd: Python 
--- Server Data Base: Sql
---Front end: Html, CSS, Javascript
---Server Core : Flask
+
+- BackEnd: Python 
+- Server Data Base: Sql
+- Front end: Html, CSS, Javascript
+- Server Core : Flask
 
 
 
