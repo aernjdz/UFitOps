@@ -1,20 +1,60 @@
-from flask import Flask, send_from_directory, render_template,request,jsonify
+from flask import Flask, send_from_directory, render_template,request,jsonify, redirect, url_for
 from flask_bootstrap import Bootstrap5
 import os
 import yt_dlp
-
+import json
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
-
+#q
 trending_url = 'https://www.youtube.com/feed/trending?bp=4gINGgt5dG1hX2NoYXJ0cw%3D%3D'
 @app.route('/')
 @app.route('/index')
 def hello_world():
-    return render_template("main.html", song=get_trending_song(trending_url), songs = get_trending_songs(trending_url))
+    username = "Login"
+    return render_template("main.html", song=get_trending_song(trending_url), songs = get_trending_songs(trending_url),user=(username))
+
 
 @app.route("/SeAll_Songs")
 def seAll_songs():
     return render_template("seeAll.html",song=get_trending_song(trending_url), songs = get_trending_songs_to20(trending_url))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # /login?username=name?password=pass q
+        username = request.form['username']
+        password = request.form['password']
+        print(username,password)
+
+        if username !="" and password!="":
+            if username=="":
+                username="Login"
+            return render_template("main.html", song=get_trending_song(trending_url), songs = get_trending_songs(trending_url), user = (username))
+        else:
+            ...
+    return render_template('login.html')
+
+
+@app.route('/signin', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        fullname = request.form['fullName']
+        username = request.form['username']
+        email = request.form['email']
+        phone = request.form['phone']
+        password = request.form['password']
+        confirmPass = request.form['confirmPass']
+        
+        if username!="" and email!="" and password!="":
+            return redirect('login.htlm')
+        else:
+           # flash("Please fill in all fields", "error")
+            Er = "Invalid username or password."
+            return redirect(('signin.html'),error=(Er))
+    return render_template('signin.html')
+
+
 def format_duration(seconds):
     if seconds is None:
         return "Unknown Duration"
@@ -84,7 +124,7 @@ def get_trending_song(url:str)->list:
 def get_trending_songs(url : str)->list:
     ydl_opts = {
         'extract_flat': 'in_playlist',
-        'playlistend': 4,
+        'playlistend': 5,
         'quiet': True
     }
    
@@ -100,15 +140,15 @@ def get_trending_songs(url : str)->list:
             songs = [
                 {
                     "id" : i+1,
-                    'title': videos[i]['title'],
-                    'url': f"https://www.youtube.com/watch?v={videos[i]['id']}",
-                    'thumbnails': videos[i]['thumbnails'][0]['url'],
-                    'artist': videos[i].get('uploader', 'Unknown Artist'),
-                    'views': f"{videos[i].get('view_count', 'Unknown Views')} Plays",
-                    'duration': format_duration(videos[i].get('duration', 'Unknown Duration')),
+                    "title": videos[i]['title'],
+                    "url": f"https://www.youtube.com/watch?v={videos[i]['id']}",
+                    "thumbnails": videos[i]['thumbnails'][3]['url'],
+                    "artist": videos[i].get('uploader', 'Unknown Artist'),
+                    "views": f"{videos[i].get('view_count', 'Unknown Views')} Plays",
+                    "duration": format_duration(videos[i].get('duration', 'Unknown Duration')),
                     
                 }
-                for i in range(4) 
+                for i in range(5) 
             ]
             return songs
 

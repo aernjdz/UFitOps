@@ -6,20 +6,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LogoCat.png') }}" > 
     <link rel="icon" type="image/ico" href="./img/LogoCat.ico" >
-    <meta http-equiv="refresh" content="60" />
+
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <title>UFitOps</title> 
 </head>
 
-<body>
-
+<body style="overflow: hidden;">
+<div class ="posit">
     <div class="container">
-        <!-- SIDEBAR -->
+        <!-- Оце не видаляти ви мене зроз? SIDEBAR search user see All song  -->
+        <!-- ok -->
         <aside class="sidebar">
             <div id="fix">
             <div class="logo">
-                <button class="menu-btn" id="menu-close">
+              <button class="menu-btn" id="menu-close">
                     <i class='bx bx-log-out-circle'></i>
                 </button>
                 <div><a href="#"><img src="{{ url_for('static', filename='img/LogoCat_no_bg.png') }}" style="width: 5vw;"/></a> </div>
@@ -48,7 +49,7 @@
                     </li>
                 </ul>
             </div>
-
+<div class="position">
             <div class="menu">
                 <h5>Library</h5>
                 <ul>
@@ -100,18 +101,18 @@
 
             <div class="trending">
                 <div class="left">
-                    <h5>Trending New Song</h5>
+                    <h5 id="status">Trending New Song</h5>
                     <div class="info">
-                        <h2>{{ song.title }}</h2>
-                        <h4>{{ song.artist }}</h4>
-                        <h5><i class='bx bx-group' style="margin-right: 5px; color:#919191"></i>{{ song.views }}  views</h5>
+                        <h3 id="status-title">{{ song.title }}</h2>
+                        <h4 id="status-artist">{{ song.artist }}</h4>
+                        <h5 id="status-views"><i class='bx bx-group' style="margin-right: 5px; color:#919191"></i>{{ song.views }}  views</h5>
                         <div class="buttons">
                             <button>Listen Now</button>
                             <i class='bx bxs-heart'></i>
                         </div>
                     </div>
                 </div>
-                <img src="{{song.thumbnails}}">
+                <img id="status-thumbnail" src="{{song.thumbnails}}">
             </div>
 
             <div class="playlist">
@@ -144,75 +145,82 @@
 
                 </div>
 
-                <div class="music-list">
-                    <div class="header">
-                        <h5>Top Songs</h5>
-                        <a href="/SeAll_Songs">See all</a>
-                    </div>
-
-                    <div class="items">
-                        {% for song_top in songs %}
-                        <div class="item">
-                            <div class="info">
-                                <p>{{ song_top.id }}</p>
-                                <img src="{{ song_top.thumbnails }}">
-                                <div class="details">
-                                    <h5>{{song_top.title }}</h5>
-                                    <p>{{song_top.artist }}</p>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <p>{{song_top.duration}}</p>
-                                <div class="icon">
-                                    <i class='bx bxs-right-arrow'></i>
-                                </div>
-                                <i class='bx bxs-plus-square'></i>
-                            </div>
-                        </div>
-                        {% endfor %}
-                  
-                      
-                    </div>
-
-                </div>
+          
 
             </div>
 
+            
         </main>
-
+        
 <!-- PROFILE -->
-        <div class="right-section">
+
+        <div  class="right-section">
+           
             <div class="profile">
                 <i class='bx bxs-bell'></i>
                 <i class='bx bxs-cog'></i>
                 <div class="user">
                     <div class="left">
-                        <img src="assets/profile.png">
+                        <a href="/login"><i class="bx bxs-user"></i></a>
                     </div>
                     <div class="right">
-                        <h5>Jhon Doe</h5>
+                        <a href="/login"> <h5>{{user}}</h5></a>
                     </div>
                 </div>
             </div>
+            <div class="music-list">
+                <div class="header">
+                    <h5>Top Songs</h5>
+                    <a href="/SeAll_Songs">See all</a>
+                </div>
 
+                <div class="items">
+                    {% for song_top in songs %}
+                    <div class="item" data-song='{{ song_top | tojson | safe }}'>
+                        <div class="info">
+                            <p>{{ song_top.id }}</p>
+                            <img src="{{ song_top.thumbnails }}">
+                            <div class="details">
+                                <h5>{{song_top.title }}</h5>
+                                <p>{{song_top.artist }}</p>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <p>{{song_top.duration}}</p>
+                            <div class="icon play-button">
+                                <i class='bx bxs-right-arrow'></i>
+                            </div>
+                            <i class='bx bxs-plus-square'></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+              
+                  
+                </div>
+
+            </div>
+            
+        
 <!-- MUSIC PLAYER -->
-<div class="music-player">
+<!-- <div class="music-player">
     <div class="top-section">
         <div class="header">
             <h5>Player</h5>
             <i class='bx bxs-playlist'></i>
         </div>
         <div class="song-info">
-            <img src="{{song.thumbnails }}">
+            <img id="thumbnail" src="">
             <div class="description">
-                <h3 id="song-title">{{song.title}}</h3>
-                <h5 id="song-artist">{{song.artist}}</h5>
+                <h3 id="song-title"></h3>
+                <h5 id="song-artist"></h5>
             </div>
             <div class="progress">
                 <p id="current-time">00:00</p>
-         
-                <div class="deactive-line"></div>
-                <p id="total-time">{{song.duration}}</p>
+                
+    
+    <input type="range" id="time_range" name="time" min="0" max="100" value="0">
+                <p id="total-time">00:00</p>
+              
             </div>
         </div>
     </div>
@@ -221,7 +229,7 @@
         <div class="buttons">
             <i class='bx bx-repeat'></i>
             <i class='bx bx-first-page'></i>
-            <i class='bx bxs-right-arrow play-button' ></i>
+            <i id="player" class='bx bxs-right-arrow play-button ' ></i>
             <i class='bx bx-last-page'></i>
             <i class='bx bx-transfer-alt'></i>
         </div>
@@ -231,21 +239,45 @@
         </div>
     </div>
 
-    <!-- Hidden audio element -->
-    <audio id="audio-player" controls style="display: none;">
-    <source id="audio-source" src="{{song.url}}" type="audio/wbm">
-</audio>
-</div>
+   
+   
+</div> -->
 
 
         </div>
-
+        
     </div>
+   
+</div>
+   
+<div class="control-panel">
+    <input type="range" id="time_range" name="time" min="0" max="100" value="0">
+    <div class="grid">
+   
+    <div class="button">
+        <div><i class='bx bx-first-page'></i></div>
+        <div><i id="player" class='bx bxs-right-arrow play-button'></i></div>
+        <div><i class='bx bx-last-page'></i></div>
+        <div class="time"><span id="current-time">00:00</span>/<span id="total-time">00:00</span></div>
+    </div>
+    <div class="song-info">
+    <div>  
+        <img id="thumbnail" src="{{song.thumbnails}}">  
+    </div>
+    <div class="song-info-text">
+    <h5 id="song-title">{{song.title}}</h5>
+    <h6 id="song-artist">{{song.artist}}</h6>
+    </div>
+</div>
 
-    
-
+</div>
+   
+</div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/PlayMusic.js')}}"></script>
 </body>
 
+<audio id="audio-player" controls  style="display: none;" >
+    <source id="audio-source" src="{{song.url}}" type="audio/ogg">
+</audio>
 </html>
