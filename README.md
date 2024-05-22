@@ -6,7 +6,7 @@
 ### Project Name:  UFitOps
 
 - BackEnd: Python 
-- Server Data Base: Sql
+- Server Data Base: SQL
 - Front end: Html, CSS, Javascript
 - Server Core : Flask
 
