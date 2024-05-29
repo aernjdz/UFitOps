@@ -15,7 +15,7 @@
 <body style="overflow: hidden;">
 <div class ="posit">
     <div class="container">
-        <!-- Оце не видаляти ви мене зроз? SIDEBAR search user see All song Genres music list -->
+        <!-- Оце не видаляти ви мене зроз? SIDEBAR search user see All song  -->
         <!-- ok -->
         <aside class="sidebar">
             <div id="fix">
@@ -30,22 +30,22 @@
             <div class="menu">
                 <h5>Menu</h5>
                 <ul>
-                   
                     <li>
                         <i class='bx bxs-volume-full'></i>
-                        <a href="{{ url_for('genres') }}">Genres</a><!--Ну и говно-->
+                        
+                        <a href="#">Genres</a>
                     </li>
                     <li>
                         <i class='bx bxs-album'></i>
-                        <a href="{{ url_for('albums') }}">Albums</a>
+                        <a href="#">Albums</a>
                     </li>
                     <li>
                         <i class='bx bxs-microphone'></i>
-                        <a href="{{ url_for('artists') }}">Artists</a>
+                        <a href="#">Artists</a>
                     </li>
                     <li>
                         <i class='bx bxs-radio'></i>
-                        <a href="{{ url_for('podcasts') }}">Podcasts</a>
+                        <a href="#">Poddcasts</a>
                     </li>
                 </ul>
             </div>
@@ -94,35 +94,10 @@
             <header>
                 <div class="search">
                     <i class='bx bx-search'></i>
-                    <input id="input" type="text" placeholder="Type here to search">
+                    <input type="text" placeholder="Type here to search">
                 </div>
 
             </header>
-            <!-- Не удаляйте це поки -->
-            <script>
-                document.getElementById('input').addEventListener('keypress', async function (e) {
-                    if (e.key === 'Enter') {
-                        const title = e.target.value;
-                        if (!title) {
-                            alert('Please enter a song title');
-                            return;
-                        }
-
-                        try {
-                            const response = await fetch(`/search_song?title=${title}`);
-                            const data = await response.json();
-
-                            if (response.ok) {
-                                console.log(data);
-                            } else {
-                                console.error('Error:', data.error);
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
-                        }
-                    }
-                });
-            </script>
 
             <div class="trending">
                 <div class="left">
@@ -132,7 +107,8 @@
                         <h4 id="status-artist">{{ song.artist }}</h4>
                         <h5 id="status-views"><i class='bx bx-group' style="margin-right: 5px; color:#919191"></i>{{ song.views }}  views</h5>
                         <div class="buttons">
-                            <div id="container"></div>
+                            <button>Listen Now</button>
+                            <i class='bx bxs-heart'></i>
                         </div>
                     </div>
                 </div>
@@ -169,8 +145,6 @@
 
                 </div>
 
-          
-
             </div>
 
             
@@ -192,14 +166,10 @@
                     </div>
                 </div>
             </div>
-        <div class="scroll-container">
-            <div class="music-list">    
+            <div class="music-list">
                 <div class="header">
-                    <h5 >Top-100 Songs</h5>
-                    <div >
-                        <a href="/SeAll_Songs">See all</a>
-                    </div>
-                    
+                    <h5>Top Songs</h5>
+                    <a href="/SeAll_Songs">See all</a>
                 </div>
 
                 <div class="items">
@@ -227,49 +197,7 @@
                 </div>
 
             </div>
-        </div> 
-        
-<!-- MUSIC PLAYER -->
-<!-- <div class="music-player">
-    <div class="top-section">
-        <div class="header">
-            <h5>Player</h5>
-            <i class='bx bxs-playlist'></i>
-        </div>
-        <div class="song-info">
-            <img id="thumbnail" src="">
-            <div class="description">
-                <h3 id="song-title"></h3>
-                <h5 id="song-artist"></h5>
-            </div>
-            <div class="progress">
-                <p id="current-time">00:00</p>
-                
-    
-    <input type="range" id="time_range" name="time" min="0" max="100" value="0">
-                <p id="total-time">00:00</p>
-              
-            </div>
-        </div>
-    </div>
 
-    <div class="player-actions">
-        <div class="buttons">
-            <i class='bx bx-repeat'></i>
-            <i class='bx bx-first-page'></i>
-            <i id="player" class='bx bxs-right-arrow play-button ' ></i>
-            <i class='bx bx-last-page'></i>
-            <i class='bx bx-transfer-alt'></i>
-        </div>
-        <div class="lyrics">
-            <i class='bx bx-chevron-up'></i>
-            <h5>LYRICS</h5>
-        </div>
-    </div>
-
-   
-   
-</div> -->
 
 
         </div>
@@ -290,22 +218,19 @@
     </div>
     <div class="song-info">
     <div>  
-        <img id="thumbnail" src="{{ song.thumbnails }}">  
+        <img id="thumbnail" src="{{song.thumbnails}}">  
     </div>
     <div class="song-info-text">
     <h5 id="song-title">{{song.title}}</h5>
     <h6 id="song-artist">{{song.artist}}</h6>
     </div>
 </div>
-<div id="position-fix">  
-    <input type="range" id="time_range_volume" name="time" min="0" max="1" step="0.01" value="0.5">
-    <div class="volume"><span id="volume">50%</span></div></div>
+
 </div>
    
 </div>
-
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/PlayMusic.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/PlayMusic.js')}}"></script>
 </body>
 
 <audio id="audio-player" controls  style="display: none;" >
